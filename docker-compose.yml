@@ -1,0 +1,30 @@
+version: "3"
+services:
+  graphqlspringbootdemo:
+    container_name: graphqlspringbootdemo
+    build: .
+    image: graphqlspringbootdemo
+    depends_on:
+      - mysql_db
+    links:
+      - mysql_db:mysql_db
+    environment:
+      spring.datasource.url: jdbc:mysql://mysql_db:3306/graphql_demo
+    networks:
+      - graphqlspringbootdemo-network
+    ports:
+      - "8001:8001"
+
+  mysql_db:
+    container_name: mysql_db
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: graphql_demo
+      MYSQL_ROOT_HOST: '%'
+    networks:
+      - graphqlspringbootdemo-network 
+
+networks:
+  graphqlspringbootdemo-network:
